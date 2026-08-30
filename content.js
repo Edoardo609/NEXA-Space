@@ -1,0 +1,4 @@
+import { db } from 'hatchable';
+export const access='public'; export const methods=['GET'];
+const T='"app_14ce2009b987445c".nexa_content';
+export default async function(req,res){try{const now=new Date().toISOString();await db.query('UPDATE '+T+' SET active=true,published_at=COALESCE(published_at,release_at,$1) WHERE active=false AND release_at IS NOT NULL AND release_at<=$2',[now,now]);const r=await db.query('SELECT id,kind,title,description,image_url,release_at,published_at,active,created_at FROM '+T+' WHERE active=true AND (release_at IS NULL OR release_at<=$1) ORDER BY COALESCE(published_at,created_at) DESC',[now]);res.setHeader('Cache-Control','no-store');return res.status(200).json(r.rows||[])}catch(e){console.error('content read',e);return res.status(500).json({error:'server_error'})}}

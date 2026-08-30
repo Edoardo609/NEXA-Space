@@ -1,0 +1,1 @@
+CREATE TABLE IF NOT EXISTS owner_drafts (owner_email TEXT NOT NULL, draft_key TEXT NOT NULL, payload JSONB NOT NULL DEFAULT '{}'::jsonb, updated_at TIMESTAMPTZ NOT NULL DEFAULT now(), PRIMARY KEY(owner_email,draft_key))

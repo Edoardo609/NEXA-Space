@@ -1,0 +1,4 @@
+import { db } from 'hatchable';
+export const access='public';
+export const methods=['GET'];
+export default async function(req,res){const [u,c,a,v]=await Promise.all([db.query('SELECT COUNT(DISTINCT user_id)::int AS count FROM profiles'),db.query('SELECT COUNT(*)::int AS count FROM nexa_content'),db.query('SELECT COUNT(*)::int AS count FROM nexa_release_alerts'),db.query('SELECT COALESCE(SUM(views),0)::int AS views,COALESCE(SUM(downloads),0)::int AS downloads FROM content')]);res.json({users:u.rows[0].count,content:c.rows[0].count,alerts:a.rows[0].count,views:v.rows[0].views,downloads:v.rows[0].downloads})}

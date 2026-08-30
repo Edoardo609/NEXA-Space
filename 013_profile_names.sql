@@ -1,0 +1,1 @@
+ALTER TABLE nexa_profiles ADD COLUMN first_name TEXT NOT NULL DEFAULT '';

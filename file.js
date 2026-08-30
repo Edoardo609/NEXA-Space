@@ -1,0 +1,5 @@
+import { storage } from 'hatchable';
+export const access = 'public';
+export const methods = ['GET'];
+const typeFor=k=>{const e=String(k).split('.').pop().toLowerCase();return ({mp3:'audio/mpeg',m4a:'audio/mp4',aac:'audio/aac',wav:'audio/wav',ogg:'audio/ogg',mp4:'video/mp4',webm:'video/webm',mov:'video/quicktime',jpg:'image/jpeg',jpeg:'image/jpeg',png:'image/png',webp:'image/webp',apk:'application/vnd.android.package-archive',ipa:'application/octet-stream'})[e]||'application/octet-stream'};
+export default async function(req,res){try{const key=String(req.query.key||'');if(!key.startsWith('uploads/'))return res.status(400).json({error:'Invalid file'});const x=await storage.get(key);if(!x||!x.buffer)return res.status(404).json({error:'File not found'});res.setHeader('Content-Type',x.type||typeFor(key));res.setHeader('Cache-Control','public, max-age=300');res.setHeader('Accept-Ranges','bytes');return res.status(200).end(x.buffer)}catch(e){console.error('file access failed',e);return res.status(500).json({error:'File unavailable',message:String(e.message||e)})}}

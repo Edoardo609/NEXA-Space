@@ -1,0 +1,4 @@
+const CACHE='nexa-space-offline-v4';
+self.addEventListener('install',e=>e.waitUntil(self.skipWaiting()));
+self.addEventListener('activate',e=>e.waitUntil((async()=>{const ks=await caches.keys();await Promise.all(ks.filter(k=>k.startsWith('nexa-space-offline-')&&k!==CACHE).map(k=>caches.delete(k)));await self.clients.claim()})()));
+self.addEventListener('fetch',e=>{const u=new URL(e.request.url);if(u.origin===location.origin&&u.pathname.startsWith('/api/')){e.respondWith(fetch(e.request,{cache:'no-store'}));return}if(e.request.mode==='navigate'){e.respondWith(fetch(e.request,{cache:'no-store'}).catch(()=>caches.match(e.request)));return}});

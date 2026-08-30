@@ -1,0 +1,1 @@
+ALTER TABLE nexa_release_alerts ADD COLUMN IF NOT EXISTS email TEXT NOT NULL DEFAULT ''

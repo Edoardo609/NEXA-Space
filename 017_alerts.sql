@@ -1,0 +1,1 @@
+CREATE TABLE IF NOT EXISTS alerts (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), user_id TEXT NOT NULL, content_id UUID NOT NULL, created_at TIMESTAMPTZ NOT NULL DEFAULT now(), UNIQUE(user_id,content_id))

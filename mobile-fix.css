@@ -1,0 +1,72 @@
+/* NEXA responsive shell: full-width, fixed header, no accidental zoom/overflow. */
+html{width:100%;max-width:100%;overflow-x:hidden;-webkit-text-size-adjust:100%;touch-action:pan-y;}
+body{width:100%;max-width:100%;overflow-x:hidden;}
+.enterScreen{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-width:0;position:relative}.enterScreen .orbit{width:460px;height:460px;margin:18px auto 28px}.enterScreen .orbit:after{width:10px;height:10px}header{position:fixed!important;top:0;left:0;right:0;width:100%;height:74px;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right));}
+body{padding-top:74px;}
+@media(max-width:600px){
+ header{height:64px;gap:8px;padding:0 12px;}
+ body{padding-top:64px;}
+ .logo{font-size:15px;letter-spacing:1px;}
+ .actions{margin-left:auto;min-width:0;gap:6px;}
+ .actions button,.actions a{white-space:nowrap;}
+ .actions .ghost{padding:9px 10px;}
+ .hero,.section{width:100%;max-width:100%;}
+ .homeCategories{grid-template-columns:repeat(2,minmax(0,1fr));width:100%;}
+ .aiFull{width:100%;min-height:calc(100vh - 64px);height:calc(100vh - 64px);padding:14px 12px 16px;}
+ .aiTop{width:100%;}
+ .aiTop h1{font-size:28px;}
+ .aiMessages{padding:18px 0 112px;width:100%;}
+ .aiMessages .msg{max-width:92%;}
+ .aiInput{left:12px;right:12px;bottom:max(12px,env(safe-area-inset-bottom));width:auto;transform:none;}
+ .chatInput input{min-width:0;}
+ footer{width:100%;}
+}
+
+/* Phone-first header: logo + Account stay visible and aligned without wrapping. */
+@media(max-width:600px){
+  header{display:flex!important;align-items:center!important;justify-content:space-between!important;overflow:visible!important;}
+  header .logo{flex:0 0 auto!important;min-width:0!important;gap:6px!important;}
+  header .logoMark{width:38px!important;height:38px!important;margin:0!important;}
+  header .logoText{font-size:14px!important;letter-spacing:1.5px!important;margin:0!important;}
+  header .actions{display:flex!important;align-items:center!important;justify-content:flex-end!important;flex:1 1 auto!important;min-width:0!important;gap:0!important;margin-left:6px!important;}
+  .accountHome{display:inline-flex!important;align-items:center!important;justify-content:center!important;flex-direction:row!important;gap:7px!important;padding:6px 8px!important;min-height:42px!important;font-size:11px!important;}
+  .accountHome .accountLabel{display:inline!important;font-size:11px!important;}
+  .homeAccountAvatar{width:30px!important;height:30px!important;flex:0 0 30px!important;margin:0!important;}
+  .homeAccountAvatar img{width:100%!important;height:100%!important;object-fit:cover!important;}
+  .hero{padding:38px 16px 48px!important;min-height:auto!important;gap:24px!important;}
+  .hero h1{font-size:clamp(42px,14vw,62px)!important;letter-spacing:-2px!important;}
+  .heroCore{height:230px!important;}
+  .coreRing{width:210px!important;height:210px!important;}
+  .homeCategories{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:9px!important;}
+  .categoryCard{min-width:0!important;padding:13px 10px!important;}
+  .section{padding:52px 16px!important;}
+  .grid{grid-template-columns:1fr!important;}
+  .feature{grid-template-columns:1fr!important;}
+  .card{min-width:0!important;}
+  .ticker{width:100%!important;}
+  .tickerItems{max-width:100%!important;}
+}
+@media(max-width:380px){
+  header{padding-left:9px!important;padding-right:9px!important;}
+  header .logoMark{width:34px!important;height:34px!important;}
+  header .logoText{font-size:12px!important;}
+  .accountHome{padding:5px 7px!important;gap:5px!important;}
+  .accountHome .accountLabel{font-size:10px!important;}
+  .homeAccountAvatar{width:28px!important;height:28px!important;flex-basis:28px!important;}
+}
+
+/* Keep ENTER, Account and Il mio spazio accessible on phone. */
+@media(max-width:600px){body:has(.accountHome) header .actions>a{display:inline-flex!important}header .actions{gap:4px!important}.ownerHome{padding:7px 8px!important;font-size:9px!important}.accountHome{padding:5px 7px!important}.accountHome .accountLabel{font-size:9px!important}.homeAccountAvatar{width:27px!important;height:27px!important;flex-basis:27px!important}}
+@media(max-width:430px){header .logoText{display:none!important}header .logoMark{width:36px!important;height:36px!important}.ownerHome{font-size:8px!important;padding:7px 6px!important}.accountHome .accountLabel{display:inline!important;font-size:9px!important}.accountHome{padding:4px 6px!important;gap:4px!important}}
+
+/* Prevent page titles from sliding underneath the fixed top bar. */
+main{scroll-margin-top:90px;}
+/* Fixed header must never cover page titles. */
+body>main{padding-top:96px!important;}
+body>main>.section:first-child,body>main>.page:first-child,body>main>section:first-child{scroll-margin-top:120px;}
+body>main h1,body>main .section h1{position:relative;z-index:1;margin-top:0!important;}
+@media(max-width:600px){
+  body>main{padding-top:86px!important;}
+  body>main>.section:first-child,body>main>.page:first-child,body>main>section:first-child{padding-top:0!important;}
+  body>main h1:first-child,body>main .eyebrow:first-child+h1{scroll-margin-top:110px;}
+}

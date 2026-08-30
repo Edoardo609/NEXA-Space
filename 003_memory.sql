@@ -1,0 +1,1 @@
+CREATE TABLE IF NOT EXISTS nexa_memory (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), user_id TEXT NOT NULL, memory TEXT NOT NULL, created_at TIMESTAMPTZ NOT NULL DEFAULT now())

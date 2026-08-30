@@ -1,0 +1,1 @@
+CREATE TABLE IF NOT EXISTS site_status (id BOOLEAN PRIMARY KEY DEFAULT TRUE, is_offline BOOLEAN NOT NULL DEFAULT FALSE, message TEXT NOT NULL DEFAULT 'NEXA Space Site è temporaneamente offline per manutenzione.', updated_at TIMESTAMPTZ NOT NULL DEFAULT now())

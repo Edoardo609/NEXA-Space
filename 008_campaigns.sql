@@ -1,0 +1,1 @@
+CREATE TABLE IF NOT EXISTS campaigns (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), title text NOT NULL, description text, image_url text, starts_at timestamptz NOT NULL, ends_at timestamptz NOT NULL, linked_content_id uuid, published boolean DEFAULT false, created_at timestamptz DEFAULT now());

@@ -1,0 +1,4 @@
+import { db } from 'hatchable';
+export const access='public';export const methods=['GET'];
+const file=u=>{const s=String(u||'');if(s.startsWith('uploads/'))return '/api/file?key='+encodeURIComponent(s);try{const x=new URL(s),m=x.pathname.match(/\/storage\/(uploads\/.*)$/);return m?'/api/file?key='+encodeURIComponent(m[1]):s}catch{return s}};
+export default async function(req,res){try{const r=await db.query("SELECT id,kind,title,description,image_url,release_at,published_at,active,created_at FROM \"app_14ce2009b987445c\".nexa_content WHERE kind='app' AND active=true ORDER BY created_at DESC");return res.json({ok:true,items:(r.rows||[]).map(x=>({...x,image_url:file(x.image_url)}))})}catch(e){console.error(e);return res.status(500).json({ok:false,message:String(e.message||e)})}}

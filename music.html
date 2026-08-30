@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="it"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NEXA Music</title>
+<link rel="stylesheet" href="./styles.css?v=213">
+<link rel="stylesheet" href="./theme-fix.css?v=213">
+<link rel="stylesheet" href="./content-list.css?v=213">
+</head><body>
+<header><a class="logo" href="./home.html"><span class="logoMark"></span><span class="logoText">NEXA</span></a><a class="ghost backHome" href="./home.html">← Home</a></header>
+<main class="section"><div class="eyebrow">NEXA MUSIC</div><h1>Musica</h1><p class="sectionLead">Ascolta e scarica le pubblicazioni musicali NEXA.</p><div class="nexaList" id="grid"></div></main>
+<script>
+const grid=document.getElementById('grid');
+const parse=d=>{const s=String(d||''),m=s.match(/\[\[NEXA_AUDIO:([\s\S]*?)\]\]/);return {audio:m?m[1].trim():'',text:s.replace(/\[\[NEXA_AUDIO:[\s\S]*?\]\]/g,'').trim()}};
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function fileUrl(ref){
+ ref=String(ref||'').trim();
+ if(ref.startsWith('chunked:')) return ref;
+ if(ref.startsWith('uploads/')) return '/api/file?key='+encodeURIComponent(ref);
+ try{const p=new URL(ref).pathname,m=p.match(/\/storage\/(uploads\/.*)$/);return m?'/api/file?key='+encodeURIComponent(m[1]):ref}catch{return ref}
+}
+async function getBlob(ref){
+ ref=String(ref||'').trim();
+ if(ref.startsWith('chunked:')){
+   const key=ref.slice(8);
+   const m=await fetch('/api/chunk-manifest?key='+encodeURIComponent(key),{cache:'no-store'}).then(async r=>{if(!r.ok)throw Error('manifest');return r.json()});
+   const parts=[]; for(const u of m.chunks){const r=await fetch(u,{cache:'no-store'});if(!r.ok)throw Error('chunk');parts.push(await r.blob())}
+   return new Blob(parts,{type:m.type||'audio/mpeg'});
+ }
+ const u=fileUrl(ref);const r=await fetch(u,{cache:'no-store',redirect:'follow'});if(!r.ok)throw Error('file '+r.status);return r.blob();
+}
+async function setAudioSource(a,ref){if(a.dataset.loaded)return;if(String(ref).startsWith('chunked:'))a.src=URL.createObjectURL(await getBlob(ref));else a.src=fileUrl(ref);a.dataset.loaded='1';a.load()}async function play(btn,ref){try{const a=btn.closest('.nexaRow').querySelector('audio');if(!a.dataset.loaded){btn.textContent='Caricamento…';await setAudioSource(a,ref)}if(a.paused){await a.play();btn.textContent='⏸ Pausa'}else{a.pause();btn.textContent='▶ Ascolta'}a.onended=()=>btn.textContent='▶ Ascolta'}catch(e){console.error(e);btn.textContent='▶ Ascolta';alert('Impossibile avviare la musica. Riprova.')}}
+async function download(btn,ref,name){try{btn.textContent='Preparazione…';const blob=await getBlob(ref),u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=(name||'brano')+(String(name||'').includes('.')?'':'.mp3');document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),60000);btn.textContent='⬇ Scarica'}catch(e){console.error(e);btn.textContent='⬇ Scarica';alert('Download non disponibile. Riprova.')}}
+function addRow(x){
+ const z=parse(x.description),row=document.createElement('article');row.className='nexaRow';
+ const img=x.image_url?'<img class="nexaCover" src="'+esc(fileUrl(x.image_url))+'" alt="Copertina" onerror="this.style.display=\'none\'">':'<div class="nexaCover">🎵</div>';
+ row.innerHTML=img+'<div class="nexaInfo"><span class="nexaTag">MUSICA</span><h2>'+esc(x.title)+'</h2><p>'+esc(z.text||'Nessuna descrizione')+'</p><audio controls preload="metadata" style="width:100%;margin-top:10px"></audio></div><div class="nexaActions"></div>';
+ const actions=row.querySelector('.nexaActions');
+ if(z.audio){
+   const p=document.createElement('button');p.className='primary';p.textContent='▶ Ascolta';p.onclick=()=>play(p,z.audio);
+   const d=document.createElement('button');d.className='ghost';d.textContent='⬇ Scarica';d.onclick=()=>download(d,z.audio,x.title);
+   actions.append(p,d);
+   const audio=row.querySelector('audio');if(String(z.audio).startsWith('chunked:')){setAudioSource(audio,z.audio).catch(e=>console.warn('Audio preload non riuscito',e))}else{audio.src=fileUrl(z.audio);audio.dataset.loaded='1';audio.load();}
+ }else actions.innerHTML='<span class="muted">File audio non allegato</span>';
+ return row;
+}
+(async()=>{
+ try{
+   const r=await fetch('/api/media?ts='+Date.now(),{cache:'no-store'});if(!r.ok)throw Error('load');
+   const data=await r.json();
+   const music=(Array.isArray(data)?data:[]).filter(x=>String(x.kind||'').toLowerCase()==='music'||/\[\[NEXA_AUDIO:/.test(String(x.description||'')));
+   if(!music.length){grid.innerHTML='<p>Nessuna musica pubblicata.</p>';return}
+   grid.replaceChildren(...music.map(addRow));
+ }catch(e){console.error(e);grid.innerHTML='<p>Impossibile caricare la musica.</p>'}
+})();
+</script><script src="./offline.js?v=213"></script></body></html>

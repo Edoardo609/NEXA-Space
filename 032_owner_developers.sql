@@ -1,0 +1,1 @@
+CREATE TABLE IF NOT EXISTS owner_developers (email TEXT PRIMARY KEY, added_at TIMESTAMPTZ NOT NULL DEFAULT now(), added_by TEXT NOT NULL DEFAULT 'edoardodalsoggio@gmail.com');

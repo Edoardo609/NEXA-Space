@@ -1,0 +1,1 @@
+CREATE TABLE IF NOT EXISTS nexa_device_memory (id BIGSERIAL PRIMARY KEY, device_id TEXT NOT NULL, memory TEXT NOT NULL, created_at TIMESTAMPTZ NOT NULL DEFAULT now())

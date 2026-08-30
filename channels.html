@@ -1,0 +1,13 @@
+<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Canali — NEXA</title><link rel="stylesheet" href="./styles.css"><link rel="stylesheet" href="./mobile-fix.css"></head><body><header><a class="logo" href="./home.html"><span class="logoMark"></span><span class="logoText">NEXA</span></a><nav><a href="./home.html">Home</a><a href="./support.html">Assistenza</a></nav><div class="actions"><a class="ghost" href="./home.html">← Home</a></div></header><main class="section" style="max-width:900px;margin:auto"><div class="eyebrow">NEXA CHANNELS</div><h1>📺 Canali ufficiali</h1><p>Segui NEXA sui canali ufficiali.</p><div id="list" class="cards"></div></main><script>
+const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+fetch('/api/content?ts='+Date.now(),{cache:'no-store'}).then(r=>r.json()).then(a=>{
+ const x=(Array.isArray(a)?a:[]).filter(i=>i.kind==='channel');
+ document.getElementById('list').innerHTML=x.length?x.map(i=>{
+  const raw=String(i.description||'');
+  const m=raw.match(/https?:\/\/[^\s<>"']+/i);
+  const url=m?m[0]:'';
+  const text=(m?raw.replace(m[0],''):raw).replace(/\n+/g,' ').trim();
+  return '<article class="card"><h2>'+esc(i.title)+'</h2><p>'+esc(text)+'</p>'+(url?'<a class="primary" href="'+esc(url)+'" target="_blank" rel="noopener">Apri canale ↗</a>':'<span class="muted">Link del canale non disponibile</span>')+'</article>'
+ }).join(''):'<div class="empty">Nessun canale pubblicato.</div>'
+}).catch(()=>document.getElementById('list').innerHTML='<div class="empty">Impossibile caricare i canali.</div>');
+</script><script src="./home-nav.js"></script><script src="./language.js"></script></body></html>

@@ -1,0 +1,1 @@
+ALTER TABLE nexa_content ADD COLUMN IF NOT EXISTS project_status TEXT NOT NULL DEFAULT 'planned'

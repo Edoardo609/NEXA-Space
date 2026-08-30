@@ -1,0 +1,3 @@
+import { admin, db } from 'hatchable';
+export const access='public';
+export default async function(req,res){const ok=await admin.check(req);if(!ok)return res.json({owner:false});const p=await admin.profile(req);const email=String(p?.email||'').toLowerCase();const founder=email==='edoardodalsoggio@gmail.com';let developer=false;if(!founder&&email){const d=await db.query('SELECT email FROM owner_developers WHERE lower(email)=lower($1)',[email]);developer=!!d.rows[0]}res.json({owner:founder||developer,founder,developer,email:p?.email||null})}

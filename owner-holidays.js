@@ -1,0 +1,5 @@
+import { admin, db } from 'hatchable';
+export const access='admin';
+export const methods=['GET','POST','PUT','DELETE'];
+async function owner(req,res){const p=await admin.profile(req);if(!p||p.email?.toLowerCase()!=='edoardodalsoggio@gmail.com'){res.status(403).json({error:'Owner access required'});return false}return true}
+export default async function(req,res){if(!await owner(req,res))return;if(req.method==='GET'){const r=await db.query('SELECT * FROM nexa_holidays ORDER BY holiday_at ASC');return res.json(r.rows)}const b=req.body||{};if(req.method==='POST'){const r=await db.query('INSERT INTO nexa_holidays(name,description,holiday_at,active) VALUES($1,$2,$3,$4) RETURNING *',[String(b.name||''),String(b.description||''),b.holiday_at,b.active!==false]);return res.json(r.rows[0])}if(req.method==='PUT'){const r=await db.query('UPDATE nexa_holidays SET name=$1,description=$2,holiday_at=$3,active=$4 WHERE id=$5 RETURNING *',[String(b.name||''),String(b.description||''),b.holiday_at,b.active!==false,b.id]);return res.json(r.rows[0]||null)}await db.query('DELETE FROM nexa_holidays WHERE id=$1',[b.id]);res.json({ok:true})}

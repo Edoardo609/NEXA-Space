@@ -1,0 +1,1 @@
+(()=>{if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(async rs=>{for(const r of rs)await r.unregister();return navigator.serviceWorker.register('./sw.js?v=4',{updateViaCache:'none'})}).catch(()=>{})}})();

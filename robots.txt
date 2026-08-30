@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://nexa-space-site.hatchable.site/sitemap.xml

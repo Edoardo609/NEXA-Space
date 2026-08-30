@@ -1,0 +1,1 @@
+CREATE TABLE IF NOT EXISTS nexa_holidays (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), name text NOT NULL, description text NOT NULL DEFAULT '', holiday_at timestamptz NOT NULL, active boolean NOT NULL DEFAULT true, created_at timestamptz NOT NULL DEFAULT now())

@@ -1,0 +1,3 @@
+import { admin, db } from 'hatchable';
+export const access='admin';
+export default async function(req,res){const owner=await admin.profile(req);if(!owner||owner.email?.toLowerCase()!=='edoardodalsoggio@gmail.com')return res.status(403).json({error:'Owner access required'});const [users,content,alerts,events]=await Promise.all([db.query('SELECT count(*)::int AS n FROM profiles'),db.query('SELECT count(*)::int AS n FROM nexa_content WHERE active=true'),db.query('SELECT count(*)::int AS n FROM nexa_release_alerts'),db.query('SELECT event_type,count(*)::int AS n FROM nexa_events GROUP BY event_type')]);res.json({users:users.rows[0].n,content:content.rows[0].n,alerts:alerts.rows[0].n,events:events.rows})}

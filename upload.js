@@ -1,0 +1,3 @@
+import { storage } from 'hatchable';
+export const access='member'; export const methods=['POST'];
+export default async function(req,res){try{const f=(req.files||[]).find(x=>x.field==='file');if(!f||!f.buffer?.length)return res.status(400).json({ok:false,error:'Nessun file ricevuto'});const name=String(f.filename||'file').replace(/[^a-zA-Z0-9._-]/g,'_');const key='uploads/'+Date.now()+'-'+crypto.randomUUID()+'-'+name;await storage.put(key,f.buffer,f.contentType||'application/octet-stream');return res.json({ok:true,key,url:key,name,size:f.buffer.length,type:f.contentType||'application/octet-stream'})}catch(e){console.error('upload failed',e);return res.status(500).json({ok:false,error:'upload_failed',message:String(e.message||e)})}}

@@ -1,0 +1,1 @@
+CREATE TABLE IF NOT EXISTS analytics_events (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), member_id TEXT, event_type TEXT NOT NULL, page TEXT NOT NULL DEFAULT '/', created_at TIMESTAMPTZ NOT NULL DEFAULT now())

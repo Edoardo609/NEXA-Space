@@ -1,0 +1,1 @@
+ALTER TABLE content ADD COLUMN IF NOT EXISTS views integer DEFAULT 0; ALTER TABLE content ADD COLUMN IF NOT EXISTS downloads integer DEFAULT 0;

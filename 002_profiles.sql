@@ -1,0 +1,1 @@
+CREATE TABLE IF NOT EXISTS nexa_profiles (user_id TEXT PRIMARY KEY, display_name TEXT NOT NULL DEFAULT '', avatar_url TEXT NOT NULL DEFAULT '', language TEXT NOT NULL DEFAULT 'it', theme TEXT NOT NULL DEFAULT 'dark', memory_enabled BOOLEAN NOT NULL DEFAULT TRUE, created_at TIMESTAMPTZ NOT NULL DEFAULT now(), updated_at TIMESTAMPTZ NOT NULL DEFAULT now())

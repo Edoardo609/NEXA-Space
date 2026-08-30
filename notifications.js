@@ -1,0 +1,1 @@
+window.NEXANotifications={async enable(){if(!('Notification'in window))return false;const p=await Notification.requestPermission();return p==='granted'},show(title,body){if('Notification'in window&&Notification.permission==='granted')new Notification(title,{body})}};

@@ -1,0 +1,1 @@
+CREATE TABLE IF NOT EXISTS nexa_content (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), kind TEXT NOT NULL, title TEXT NOT NULL, description TEXT NOT NULL DEFAULT '', image_url TEXT NOT NULL DEFAULT '', release_at TIMESTAMPTZ, published_at TIMESTAMPTZ, active BOOLEAN NOT NULL DEFAULT TRUE, created_at TIMESTAMPTZ NOT NULL DEFAULT now())

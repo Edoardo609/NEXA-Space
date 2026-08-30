@@ -1,0 +1,1 @@
+CREATE TABLE IF NOT EXISTS nexa_events (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), user_id TEXT, content_id UUID, event_type TEXT NOT NULL, created_at TIMESTAMPTZ NOT NULL DEFAULT now())
