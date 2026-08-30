@@ -1,0 +1,52 @@
+[ai]
+required = true
+description = "NEXA AI assistant powered by Groq."
+
+[[secret]]
+name = "GROQ_API_KEY"
+required = true
+expose = true
+
+[db.tables.nexa_profiles]
+read = "public"
+write = "public"
+
+[db.tables.nexa_memory]
+read = "public"
+write = "public"
+
+[db.tables.nexa_chats]
+read = "public"
+write = "public"
+
+[db.tables.nexa_messages]
+read = "public"
+write = "public"
+
+[db.tables.nexa_release_alerts]
+read = "public"
+write = "public"
+
+[db.tables.alerts]
+read = "public"
+write = "public"
+
+[db.tables.chats]
+read = "public"
+write = "public"
+
+[db.tables.messages]
+read = "public"
+write = "public"
+
+[db.tables.profiles]
+read = "public"
+write = "public"
+
+[db.tables.ai_memory]
+read = "public"
+write = "public"
+
+[db.tables.nexa_events]
+read = "public"
+write = "public"

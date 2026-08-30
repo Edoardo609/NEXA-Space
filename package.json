@@ -1,0 +1,12 @@
+{
+  "name":"nexa-space",
+  "version":"1.0.0",
+  "private":true,
+  "description":"NEXA Space offline-capable Cordova application",
+  "scripts":{
+    "prepare-cordova":"node -e \"const fs=require('fs');fs.rmSync('www',{recursive:true,force:true});fs.cpSync('public','www',{recursive:true});fs.copyFileSync('public/config.xml','config.xml');console.log('Cordova web root ready')\"",
+    "cordova:prepare":"npm run prepare-cordova && npx cordova prepare android",
+    "build:android":"npm run prepare-cordova && npx cordova platform add android && npx cordova build android --debug"
+  },
+  "devDependencies":{"cordova":"^12.0.0"}
+}
