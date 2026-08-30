@@ -1,0 +1,6 @@
+{
+  "appId": "com.edoardo.nexaspace",
+  "appName": "NEXA Space",
+  "webDir": "public",
+  "bundledWebRuntime": false
+}
