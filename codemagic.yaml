@@ -12,20 +12,12 @@ workflows:
       events:
         - push
     scripts:
-      - name: Build Cordova APK
+      - name: Build Android Native APK
         script: |
-          npm install -g cordova
-          mkdir -p workspace
-          cp -R * workspace/ || true
-          rm -rf workspace/nexa-app workspace/workspace workspace/public || true
-          rm -f workspace/codemagic.yaml workspace/nexa-space-codemagic.yaml workspace/icon.png || true
-          cordova create nexa-app com.edoardo.nexaspace "NEXA Space"
-          cd nexa-app
-          rm -rf www/*
-          cp -R ../workspace/* www/ || true
-          if [ -f "../icon.png" ]; then cp ../icon.png www/icon.png; fi
-          echo '<widget id="com.edoardo.nexaspace" version="1.0.0" xmlns="http://w3.org" xmlns:cdv="http://apache.org"><name>NEXA Space</name><description>NEXA Space Offline App</description><author>Edoardo</author><content src="index.html" /><access origin="*" /><allow-navigation href="*" /><platform name="android"><icon src="www/icon.png" /></platform></widget>' > config.xml
-          cordova platform add android --noscript
-          cordova build android --debug --device
+          npm install -g @capacitor/cli @capacitor/core
+          npm install @capacitor/android
+          npx cap init "NEXA Space" "com.edoardo.nexaspace" --web-dir=.
+          npx cap add android
+          cd android && ./gradlew assembleDebug
     artifacts:
-      - nexa-app/platforms/android/app/build/outputs/apk/debug/*.apk
+      - android/app/build/outputs/apk/debug/*.apk
