@@ -18,6 +18,7 @@ workflows:
           npm install @capacitor/android
           npx cap init "NEXA Space" "com.edoardo.nexaspace" --web-dir=.
           npx cap add android
+          npx cap sync android
           cd android && ./gradlew assembleDebug
     artifacts:
       - android/app/build/outputs/apk/debug/*.apk
