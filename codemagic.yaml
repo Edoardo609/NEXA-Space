@@ -1,14 +1,30 @@
 workflows:
-  nexa-space-android:
-    name: NEXA Space Android
-    max_build_duration: 60
+  android-html-app:
+    name: NEXA Space Offline
+    max_build_duration: 15
+    instance_type: mac_mini_m1
     environment:
-      node: 20
+      groups:
+        - ionic-credentials
+      node: latest
       java: 17
+    triggering:
+      events:
+        - push
     scripts:
-      - name: Install dependencies
-        script: npm install
       - name: Build Cordova APK
-        script: npm run build:android
+        script: |
+          npm install -g cordova
+          rm -rf nexa-app
+          mkdir -p public
+          cordova create nexa-app com.edoardo.nexaspace "NEXA Space"
+          cd nexa-app
+          rm -rf www/*
+          cp -R ../* www/ || true
+          rm -rf www/nexa-app
+          if [ -f "../icon.png" ]; then cp ../icon.png www/icon.png; fi
+          echo '<widget id="com.edoardo.nexaspace" version="1.0.0" xmlns="http://w3.org" xmlns:cdv="http://apache.org"><name>NEXA Space</name><description>NEXA Space Offline App</description><author>Edoardo</author><content src="index.html" /><access origin="*" /><allow-navigation href="*" /><platform name="android"><icon src="www/icon.png" /></platform></widget>' > config.xml
+          cordova platform add android --noscript
+          cordova build android --debug --device
     artifacts:
-      - platforms/android/app/build/outputs/**/*.apk
+      - nexa-app/platforms/android/app/build/outputs/apk/debug/*.apk
